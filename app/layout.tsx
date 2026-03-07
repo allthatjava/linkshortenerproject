@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import {
+  ClerkProvider,
+  Show,
+  UserButton,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,11 +32,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
+        data-new-gr-c-s-check-loaded="14.1275.0"
+        data-gr-ext-installed=""
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ClerkProvider>
+          <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/75 backdrop-blur dark:border-slate-800 dark:bg-slate-950/75">
+            <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+              <Link
+                href="/"
+                className="text-lg font-semibold tracking-tight text-slate-900 hover:text-slate-700 dark:text-slate-50 dark:hover:text-slate-200"
+              >
+                LinkShortener
+              </Link>
+
+              <div className="flex items-center gap-2">
+                <Show when="signed-out">
+                  <SignInButton mode="modal">
+                    <Button size="sm">Sign in</Button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <Button variant="secondary" size="sm">
+                      Sign up
+                    </Button>
+                  </SignUpButton>
+                </Show>
+                <Show when="signed-in">
+                  <UserButton />
+                </Show>
+              </div>
+            </nav>
+          </header>
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );
