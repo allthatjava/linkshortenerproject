@@ -1,17 +1,15 @@
-import { redirect } from "next/navigation";
+import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
-import RedirectOnSignIn from "@/components/redirect-on-signin";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const { userId } = await auth();
-  if (userId) redirect("/dashboard");
+  const isSignedIn = Boolean(userId);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
-      <RedirectOnSignIn />
 
       <main className="mx-auto flex max-w-6xl flex-col gap-20 px-4 py-16 sm:px-6 lg:px-8">
         <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
@@ -30,22 +28,34 @@ export default async function Home() {
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <SignUpButton mode="modal">
-                <Button className="w-full" size="lg">
-                  Get started
+              {isSignedIn ? (
+                <Button asChild className="w-full" size="lg">
+                  <Link href="/dashboard" className="w-full">
+                    Go to dashboard
+                  </Link>
                 </Button>
-              </SignUpButton>
-              <SignInButton mode="modal">
-                <Button className="w-full" variant="outline" size="lg">
-                  Sign in
-                </Button>
-              </SignInButton>
+              ) : (
+                <>
+                  <SignUpButton mode="modal">
+                    <Button className="w-full" size="lg">
+                      Get started
+                    </Button>
+                  </SignUpButton>
+                  <SignInButton mode="modal">
+                    <Button className="w-full" variant="outline" size="lg">
+                      Sign in
+                    </Button>
+                  </SignInButton>
+                </>
+              )}
             </div>
 
-            <p className="text-sm text-slate-300">
-              Already have an account? Use the <span className="font-semibold">Sign in</span>
-              button above to access your dashboard.
-            </p>
+            {!isSignedIn && (
+              <p className="text-sm text-slate-300">
+                Already have an account? Use the <span className="font-semibold">Sign in</span>
+                button above to access your dashboard.
+              </p>
+            )}
           </div>
 
           <div className="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 backdrop-blur">
