@@ -129,16 +129,19 @@ export default async function Home() {
               Create an account and start sharing cleaner, faster URLs in minutes.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <SignUpButton mode="modal">
-                <Button className="w-full" size="lg">
-                  Get started
+              {isSignedIn ? (
+                <Button asChild className="w-full" size="lg">
+                  <Link href="/dashboard" className="w-full">
+                    Get started
+                  </Link>
                 </Button>
-              </SignUpButton>
-              <SignInButton mode="modal">
-                <Button className="w-full" variant="outline" size="lg">
-                  Sign in
-                </Button>
-              </SignInButton>
+              ) : (
+                <SignInButton mode="modal">
+                  <Button className="w-full" size="lg">
+                    Sign in
+                  </Button>
+                </SignInButton>
+              )}
             </div>
           </div>
         </section>
