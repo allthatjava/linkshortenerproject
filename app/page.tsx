@@ -31,31 +31,17 @@ export default async function Home() {
               {isSignedIn ? (
                 <Button asChild className="w-full" size="lg">
                   <Link href="/dashboard" className="w-full">
-                    Go to dashboard
+                    Get started
                   </Link>
                 </Button>
               ) : (
-                <>
-                  <SignUpButton mode="modal">
-                    <Button className="w-full" size="lg">
-                      Get started
-                    </Button>
-                  </SignUpButton>
-                  <SignInButton mode="modal">
-                    <Button className="w-full" variant="outline" size="lg">
-                      Sign in
-                    </Button>
-                  </SignInButton>
-                </>
+                <SignInButton mode="modal">
+                  <Button className="w-full" size="lg">
+                    Sign in
+                  </Button>
+                </SignInButton>
               )}
             </div>
-
-            {!isSignedIn && (
-              <p className="text-sm text-slate-300">
-                Already have an account? Use the <span className="font-semibold">Sign in</span>
-                button above to access your dashboard.
-              </p>
-            )}
           </div>
 
           <div className="rounded-3xl bg-white/5 p-8 ring-1 ring-white/10 backdrop-blur">
